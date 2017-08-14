@@ -8,7 +8,7 @@
 				"description": "Base URL for Template Files",
 				"artifactsBaseUrl": ""
 			},
-			"defaultValue": "https://raw.githubusercontent.com/mglantz/ocp-azure-simple/master/"
+			"defaultValue": "https://raw.githubusercontent.com/mglantz/ocp36-azure-simple/master/"
 		},
 		"masterVmSize": {
 			"type": "string",
