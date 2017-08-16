@@ -8,7 +8,7 @@ POOL_ID=$3
 # Register Host with Cloud Access Subscription
 echo $(date) " - Register host with Cloud Access Subscription"
 
-subscription-manager register --username="$USER" --password="$PASSWORD"
+subscription-manager register --username="$USER" --password="$PASSWORD" --force
 if [ $? -eq 0 ]
 then
    echo "Subscribed successfully"
@@ -60,7 +60,8 @@ sed -i -e "s#^OPTIONS='--selinux-enabled'#OPTIONS='--selinux-enabled --insecure-
 # Create thin pool logical volume for Docker
 echo $(date) " - Creating thin pool logical volume for Docker and staring service"
 
-DOCKERVG=$( parted -m /dev/sda print all 2>/dev/null | grep unknown | grep /dev/sd | cut -d':' -f1 )
+#DOCKERVG=$( parted -m /dev/sda print all 2>/dev/null | grep unknown | grep /dev/sd | cut -d':' -f1 )
+DOCKERVG="/dev/sdc"
 
 echo "DEVS=${DOCKERVG}" >> /etc/sysconfig/docker-storage-setup
 echo "VG=docker-vg" >> /etc/sysconfig/docker-storage-setup
