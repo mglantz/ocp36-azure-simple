@@ -8,7 +8,7 @@ POOL_ID=$3
 # Register Host with Cloud Access Subscription
 echo $(date) " - Register host with Cloud Access Subscription"
 
-subscription-manager register --username="$USER" --password="$PASSWORD"
+subscription-manager register --username="$USER" --password="$PASSWORD" --force
 if [ $? -eq 0 ]
 then
    echo "Subscribed successfully"
