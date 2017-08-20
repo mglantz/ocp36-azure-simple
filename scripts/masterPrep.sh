@@ -91,7 +91,8 @@ if hostname -f|grep -- "-0" >/dev/null
 then
    echo $(date) " - We are on master-0 ($(hostname)): Setting up NFS server for persistent storage"
    yum -y install nfs-utils
-   VGFREESPACE=$(vgs|grep docker-vg|awk '{ print $7 }'|sed 's/.00g/G/')
+   VGCALC=$(vgs|grep docker-vg|awk '{ print $7 }'|sed -e 's/.[0-9][0-9]g//' -e 's/<//g')
+   VGFREESPACE=$(echo $VGCALC - 1|bc)
    lvcreate -n lv_nfs -L+$VGFREESPACE docker-vg
    mkfs.xfs /dev/mapper/docker--vg-lv_nfs
    echo "/dev/mapper/docker--vg-lv_nfs /exports xfs defaults 0 0" >>/etc/fstab
