@@ -51,11 +51,11 @@
 		},
 		"openshiftClusterPrefix": {
 			"type": "string",
-			"defaultValue": "aacl",
+			"defaultValue": "ocp",
 			"minLength": 1,
 			"maxLength": 5,
 			"metadata": {
-				"description": "OpenShift cluster prefix.  Used to generate master, infra and node hostnames.  Maximum of 5 characters."
+				"description": "OpenShift cluster prefix.  Used to generate master, infra and node hostnames.  Max 5 characters."
 			}
 		},
 		"openshiftMasterPublicIpDnsLabel": {
