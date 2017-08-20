@@ -6,10 +6,10 @@
 			"value": "https://raw.githubusercontent.com/mglantz/ocp36-azure-simple/master/"
 		},
 		"masterVmSize": {
-			"value": "Standard_DS2_v2"
+			"value": "Standard_DS4_v2"
 		},
 		"nodeVmSize": {
-			"value": "Standard_DS2_v2"
+			"value": "Standard_DS3_v2"
 		},
 		"openshiftClusterPrefix": {
 			"value": "changeme"

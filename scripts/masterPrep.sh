@@ -8,7 +8,7 @@ POOL_ID=$3
 # Register Host with Cloud Access Subscription
 echo $(date) " - Register host with Cloud Access Subscription"
 
-subscription-manager register --username="$USER" --password="$PASSWORD"
+subscription-manager register --username="$USER" --password="$PASSWORD" --force
 if [ $? -eq 0 ]
 then
    echo "Subscribed successfully"
@@ -48,7 +48,7 @@ systemctl start cockpit.socket
 # Install base packages and update system to latest packages
 echo $(date) " - Install base packages and update system to latest packages"
 
-yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion httpd-tools
+yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct httpd-tools
 yum -y update --exclude=WALinuxAgent
 
 # Install OpenShift utilities
@@ -65,7 +65,8 @@ sed -i -e "s#^OPTIONS='--selinux-enabled'#OPTIONS='--selinux-enabled --insecure-
 # Create thin pool logical volume for Docker
 echo $(date) " - Creating thin pool logical volume for Docker and staring service"
 
-DOCKERVG=$( parted -m /dev/sda print all 2>/dev/null | grep unknown | grep /dev/sd | cut -d':' -f1 )
+#DOCKERVG=$( parted -m /dev/sda print all 2>/dev/null | grep unknown | grep /dev/sd | cut -d':' -f1 )
+DOCKERVG="/dev/sdc"
 
 echo "DEVS=${DOCKERVG}" >> /etc/sysconfig/docker-storage-setup
 echo "VG=docker-vg" >> /etc/sysconfig/docker-storage-setup
@@ -90,7 +91,8 @@ if hostname -f|grep -- "-0" >/dev/null
 then
    echo $(date) " - We are on master-0 ($(hostname)): Setting up NFS server for persistent storage"
    yum -y install nfs-utils
-   VGFREESPACE=$(vgs|grep docker-vg|awk '{ print $7 }'|sed 's/.00g/G/')
+   VGCALC=$(vgs|grep docker-vg|awk '{ print $7 }'|sed -e 's/.[0-9][0-9]g//' -e 's/<//g')
+   VGFREESPACE=$(echo $VGCALC - 1|bc)
    lvcreate -n lv_nfs -L+$VGFREESPACE docker-vg
    mkfs.xfs /dev/mapper/docker--vg-lv_nfs
    echo "/dev/mapper/docker--vg-lv_nfs /exports xfs defaults 0 0" >>/etc/fstab

@@ -8,7 +8,7 @@ POOL_ID=$3
 # Register Host with Cloud Access Subscription
 echo $(date) " - Register host with Cloud Access Subscription"
 
-subscription-manager register --username="$USER" --password="$PASSWORD"
+subscription-manager register --username="$USER" --password="$PASSWORD" --force
 if [ $? -eq 0 ]
 then
    echo "Subscribed successfully"
@@ -40,7 +40,7 @@ subscription-manager repos \
 # Install base packages and update system to latest packages
 echo $(date) " - Install base packages and update system to latest packages"
 
-yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion httpd-tools
+yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct httpd-tools
 yum -y update --exclude=WALinuxAgent
 
 # Install OpenShift utilities
