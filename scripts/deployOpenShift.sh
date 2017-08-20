@@ -41,6 +41,25 @@ sed -i -e "s/^#pty=False/pty=False/" /etc/ansible/ansible.cfg
 # Create Ansible Playbook for Post Installation task
 echo $(date) " - Create Ansible Playbook for Post Installation task"
 
+# Run on all nodes
+cat > /home/${SUDOUSER}/preinstall.yml <<EOF
+---
+- hosts: nodes
+  remote_user: ${SUDOUSER}
+  become: yes
+  become_method: sudo
+  vars:
+    description: "Create OpenShift Users"
+  tasks:
+  - name: copy hosts file
+    copy:
+      src: /tmp/hosts
+      dest: /etc/hosts
+      owner: root
+      group: root
+      mode: 0644
+EOF
+
 # Run on all masters
 cat > /home/${SUDOUSER}/postinstall.yml <<EOF
 ---
@@ -248,6 +267,32 @@ $NODE-[0:${NODELOOP}].$DOMAIN openshift_node_labels="{'region': 'nodes', 'zone':
 EOF
 
 fi
+
+# FIXME
+# Create and distribute hosts file to all nodes, this is due to us having to use 
+# openshift_use_dnsmasq=true in 3.6, which configures /etc/resolv.conf to use as well.
+# Horrible hack, but I need to get this working now rather than later.
+
+(
+echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4"
+echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6"
+for node in ocpm-0 ocpm-1 ocpm-2; do
+	ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $3 " " $2  }'|sed -e 's/(//' -e 's/)//'
+done
+
+for node in ocpi-{0..5}; do
+	ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $3 " " $2  }'|sed -e 's/(//' -e 's/)//'
+done
+
+for node in ocpn-{0..30}; do
+	ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $3 " " $2  }'|sed -e 's/(//' -e 's/)//'
+done
+) >/tmp/hosts
+
+chmod a+r /tmp/hosts
+
+# Create correct hosts file on all servers
+runuser -l $SUDOUSER -c "ansible-playbook ~/preinstall.yml"
 
 # Initiating installation of OpenShift Container Platform using Ansible Playbook
 echo $(date) " - Installing OpenShift Container Platform via Ansible Playbook"
