@@ -35,7 +35,6 @@ subscription-manager repos \
     --enable="rhel-7-server-rpms" \
     --enable="rhel-7-server-extras-rpms" \
     --enable="rhel-7-fast-datapath-rpms" \
-    --enable="rh-gluster-3-for-rhel-7-server-rpms" \
     --enable="rhel-7-server-ose-3.6-rpms"
 
 # Install and enable Cockpit
@@ -49,7 +48,7 @@ systemctl start cockpit.socket
 # Install base packages and update system to latest packages
 echo $(date) " - Install base packages and update system to latest packages"
 
-yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct glusterfs-fuse httpd-tools
+yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct httpd-tools
 yum -y update --exclude=WALinuxAgent
 
 # Install OpenShift utilities
