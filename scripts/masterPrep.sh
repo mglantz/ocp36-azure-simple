@@ -105,6 +105,9 @@ then
       exit 6
    fi
    
+   lvextend -L+20G /dev/docker-vg/lv_nfs
+   xfs_growfs /dev/docker-vg/lv_nfs
+   
    for item in registry metrics jenkins
    do 
       mkdir -p /exports/$item
