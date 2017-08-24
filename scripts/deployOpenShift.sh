@@ -104,10 +104,10 @@ cat > /home/${SUDOUSER}/postinstall3.yml <<EOF
     shell: echo "${PASSWORD}"|passwd root --stdin
 EOF
 
-# Run on master
+# Run on all masters
 cat > /home/${SUDOUSER}/postinstall4.yml <<EOF
 ---
-- hosts: nfs
+- hosts: masters
   remote_user: ${SUDOUSER}
   become: yes
   become_method: sudo
