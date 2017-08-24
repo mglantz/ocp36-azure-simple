@@ -104,6 +104,27 @@ cat > /home/${SUDOUSER}/postinstall3.yml <<EOF
     shell: echo "${PASSWORD}"|passwd root --stdin
 EOF
 
+# Run on master
+cat > /home/${SUDOUSER}/postinstall4.yml <<EOF
+---
+- hosts: nfs
+  remote_user: ${SUDOUSER}
+  become: yes
+  become_method: sudo
+  vars:
+    description: "Unset default registry DNS name"
+  tasks:
+  - name: copy atomic-openshift-master file
+    copy:
+      src: /tmp/atomic-openshift-master
+      dest: /etc/sysconfig/atomic-openshift-master
+      owner: root
+      group: root
+      mode: 0644
+  - name: restart master
+    shell: systemctl restart atomic-openshift-master
+EOF
+
 # Create Ansible Hosts File
 echo $(date) " - Create Ansible Hosts file"
 
@@ -268,11 +289,7 @@ EOF
 
 fi
 
-# FIXME
 # Create and distribute hosts file to all nodes, this is due to us having to use 
-# openshift_use_dnsmasq=true in 3.6, which configures /etc/resolv.conf to use as well.
-# Horrible hack, but I need to get this working now rather than later.
-
 (
 echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4"
 echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6"
@@ -328,5 +345,26 @@ runuser -l $SUDOUSER -c "ansible-playbook ~/postinstall2.yml"
 echo $(date) "- Assigning password for root, which is used to login to Cockpit"
 
 runuser -l $SUDOUSER -c "ansible-playbook ~/postinstall3.yml"
+
+# Unset of OPENSHIFT_DEFAULT_REGISTRY. Just the easiest way out.
+
+cat > /tmp/atomic-openshift-master <<EOF
+OPTIONS=--loglevel=2
+CONFIG_FILE=/etc/origin/master/master-config.yaml
+#OPENSHIFT_DEFAULT_REGISTRY=docker-registry.default.svc:5000
+
+
+# Proxy configuration
+# See https://docs.openshift.com/enterprise/latest/install_config/install/advanced_install.html#configuring-global-proxy
+# Origin uses standard HTTP_PROXY environment variables. Be sure to set
+# NO_PROXY for your master
+#NO_PROXY=master.example.com
+#HTTP_PROXY=http://USER:PASSWORD@IPADDR:PORT
+#HTTPS_PROXY=https://USER:PASSWORD@IPADDR:PORT
+EOF
+
+chmod a+r /tmp/atomic-openshift-master
+
+runuser -l $SUDOUSER -c "ansible-playbook ~/postinstall4.yml"
 
 echo $(date) " - Script complete"
