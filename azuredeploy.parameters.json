@@ -12,13 +12,13 @@
 			"value": "Standard_DS3_v2"
 		},
 		"openshiftClusterPrefix": {
-			"value": "changeme"
+			"value": "ocp"
 		},
 		"openshiftMasterPublicIpDnsLabel": {
-			"value": "GEN-UNIQUE"
+			"value": "master"
 		},
 		"infraLbPublicIpDnsLabel": {
-			"value": "GEN-UNIQUE"
+			"value": "apps"
 		},
 		"masterInstanceCount": {
 			"value": 1
@@ -30,37 +30,37 @@
 			"value": 50
 		},
 		"adminUsername": {
-			"value": "changeme"
+			"value": "admin-user"
 		},
 		"openshiftPassword": {
 			"value": "changeme"
 		},
 		"cloudAccessUsername": {
-			"value": "changeme"
+			"value": "changeme-jbrannstr@redhat.com"
 		},
 		"cloudAccessPassword": {
 			"value": "changeme"
 		},
 		"cloudAccessPoolId": {
-			"value": "changeme"
+			"value": "changeme-8a85f98159eeb53d0159ef8620fd4694"
 		},
 		"sshPublicKey": {
-			"value": "GEN-SSH-PUB-KEY"
+			"value": "changeme-paste-your-key"
 		},
 		"keyVaultResourceGroup": {
-			"value": "changeme"
+			"value": "OpenShiftResourceGroup"
 		},
 		"keyVaultName": {
-			"value": "changeme"
+			"value": "OpenShiftResourceGroupKeyVaultName"
 		},
 		"keyVaultSecret": {
-			"value": "changeme"
+			"value": "OpenShiftResourceGroupSecretName"
 		},
 		"defaultSubDomainType": {
-			"value": "xipio"
+			"value": "custom"
 		},
 		"defaultSubDomain": {
-			"value": "changeme"
+			"value": "myhostname.com"
 		}
 	}
 }
