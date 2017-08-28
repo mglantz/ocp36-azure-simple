@@ -4,17 +4,19 @@
 
 # Assign first argument to be Azure Resource Group
 GROUP=$1
+LOCATION=northeurope
 
 # Set sensible default
 if test -z $GROUP
-  GROUP=OpenShiftResourceGroup
+ then
+  GROUP=ocp
 fi
 
 # Create Azure Resource Group
-azure group create $GROUP 'North Europe’
+azure group create $GROUP $LOCATION
 
 # Create Keyvault in which we put our SSH private key
-azure keyvault create -u ${GROUP}KeyVaultName -g $GROUP -l 'North Europe’
+azure keyvault create -u ${GROUP}KeyVaultName -g $GROUP -l $LOCATION
 
 # Put SSH private key in key vault
 azure keyvault secret set -u ${GROUP}KeyVaultName -s ${GROUP}SecretName --file ~/.ssh/id_rsa
