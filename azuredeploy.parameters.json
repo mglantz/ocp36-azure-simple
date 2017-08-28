@@ -27,40 +27,40 @@
 			"value": 1
 		},
 		"dataDiskSize": {
-			"value": 50
+			"value": 128
 		},
 		"adminUsername": {
 			"value": "admin-user"
 		},
 		"openshiftPassword": {
-			"value": "changeme"
+			"value": "PICK_AN_ADMIN_PASSWORD"
 		},
 		"cloudAccessUsername": {
-			"value": "changeme-jbrannstr@redhat.com"
+			"value": "YOUR_REDHAT_ACCESS_EMAIL"
 		},
 		"cloudAccessPassword": {
-			"value": "changeme"
+			"value": "YOUR_REDHAT_ACCESS_PASSWORD"
 		},
 		"cloudAccessPoolId": {
-			"value": "changeme-8a85f98159eeb53d0159ef8620fd4694"
+			"value": "YOUR_REDHAT_OPENSHIFT_SUBSCRIPTION_POOL_ID"
 		},
 		"sshPublicKey": {
-			"value": "changeme-paste-your-key"
+			"value": "GENERATE_A_PUBLIC_SSH_KEY"
 		},
 		"keyVaultResourceGroup": {
-			"value": "OpenShiftResourceGroup"
+			"value": "ocp"
 		},
 		"keyVaultName": {
-			"value": "OpenShiftResourceGroupKeyVaultName"
+			"value": "ocpKeyVaultName"
 		},
 		"keyVaultSecret": {
-			"value": "OpenShiftResourceGroupSecretName"
+			"value": "ocpSecretName"
 		},
 		"defaultSubDomainType": {
 			"value": "custom"
 		},
 		"defaultSubDomain": {
-			"value": "myhostname.com"
+			"value": "YOUR_PUBLIC_DOMAIN_NAME"
 		}
 	}
 }
