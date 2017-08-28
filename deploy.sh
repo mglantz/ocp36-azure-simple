@@ -5,6 +5,11 @@
 # Assign first argument to be Azure Resource Group
 GROUP=$1
 
+# Set sensible default
+if test -z $GROUP
+  GROUP=OpenShiftResourceGroup
+fi
+
 # Create Azure Resource Group
 azure group create $GROUP 'North Europe’
 
