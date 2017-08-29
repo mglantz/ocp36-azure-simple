@@ -7,11 +7,13 @@ The script will run on a Linux server or on MacOS. Possibly it will run in a bas
 1. Install the Azure CLI 1.0: https://docs.microsoft.com/en-us/azure/cli-install-nodejs
 
 2. Download the repository:
+
 $ git clone https://github.com/mglantz/ocp36-azure-simple
 
 3. Edit deploy.cfg
 
 4. Run the deployment script to install an OpenShift cluster on Azure. Pass the name of your Azure resource group as an argument. The name of the group will form the DNS name of the OpenShift master like such: http://THEGROUPNAMEmaster.REGION.cloudapp.azure.com
+
 $ sh ./deploy.sh myocpdemo
 
 5. Wait for the deployment to complete. Check out the resource group in https://portal.azure.com and wait for it to say "2 Succeeded" under Deployments.
