@@ -48,7 +48,7 @@
 			"value": "PUBLIC_SSH_KEY"
 		},
 		"keyVaultResourceGroup": {
-			"value": "REPLACEocp"
+			"value": "REPLACE"
 		},
 		"keyVaultName": {
 			"value": "REPLACEKeyVaultName"
