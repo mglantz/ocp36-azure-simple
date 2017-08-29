@@ -12,15 +12,17 @@ This template deploys OpenShift Container Platform with basic username / passwor
 |Virtual Machines   	|1 Bastion Node - Used both to Run Ansible Playbook for OpenShift deployment and to do internal load balancing to the masters<br />1 or 3 Masters. Master 1 is used to run a NFS server to provide persistent storage.<br />1 or 3 Infra nodes<br />User-defined number of nodes<br />All VMs include a single attached data disk for Docker thin pool logical volume|
 
 ## To deploy a cluster with a one-liner
-1. On a Linux server, on MacOS or in Bash shell in Windows 10: Download the repository to your laptop:
+1. Install the Azure CLI 1.0: https://docs.microsoft.com/en-us/azure/cli-install-nodejs
+
+2. On a Linux server, on MacOS or in Bash shell in Windows 10: Download the repository to your laptop:
 $ git clone https://github.com/mglantz/ocp36-azure-simple
 
-2. Edit deploy.cfg
+3. Edit deploy.cfg
 
-3. Run the deployment script and pass the name of your Azure resource group as an argument. The name of the group will form the DNS name of the OpenShift master like such: http://THEGROUPNAMEmaster.REGION.cloudapp.azure.com
+4. Run the deployment script to install an OpenShift cluster on Azure. Pass the name of your Azure resource group as an argument. The name of the group will form the DNS name of the OpenShift master like such: http://THEGROUPNAMEmaster.REGION.cloudapp.azure.com
 $ sh ./deploy.sh myocpdemo
 
-4. Wait for the deployment to complete. Check out the resource group in https://portal.azure.com and wait for it to say "2 Succeeded" under Deployments.
+5. Wait for the deployment to complete. Check out the resource group in https://portal.azure.com and wait for it to say "2 Succeeded" under Deployments.
 
 ## READ the instructions in its entirety before deploying via the deployment button below!
 
