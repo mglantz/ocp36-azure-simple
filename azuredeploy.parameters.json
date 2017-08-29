@@ -30,7 +30,7 @@
 			"value": 128
 		},
 		"adminUsername": {
-			"value": "OCP_USER"
+			"value": "OCP_USERNAME"
 		},
 		"openshiftPassword": {
 			"value": "OCP_PASSWORD"
