@@ -30,16 +30,16 @@
 			"value": 128
 		},
 		"adminUsername": {
-			"value": "PICK_USERNAME"
+			"value": "OCP_USERNAME"
 		},
 		"openshiftPassword": {
-			"value": "PICK_A_PASSWORD"
+			"value": "OCP_PASSWORD"
 		},
 		"cloudAccessUsername": {
-			"value": "YOUR_RHN_ACCOUNT"
+			"value": "RHN_ACCOUNT"
 		},
 		"cloudAccessPassword": {
-			"value": "YOUR_RHN_PASSWORD"
+			"value": "RHN_PASSWORD"
 		},
 		"cloudAccessPoolId": {
 			"value": "SUBSCRIPTION_POOL_ID"
