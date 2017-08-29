@@ -12,9 +12,12 @@ This template deploys OpenShift Container Platform with basic username / passwor
 |Virtual Machines   	|1 Bastion Node - Used both to Run Ansible Playbook for OpenShift deployment and to do internal load balancing to the masters<br />1 or 3 Masters. Master 1 is used to run a NFS server to provide persistent storage.<br />1 or 3 Infra nodes<br />User-defined number of nodes<br />All VMs include a single attached data disk for Docker thin pool logical volume|
 
 ## To deploy a cluster with a one-liner
+
+The script will run on a Linux server or on MacOS. Possibly it will run in a bash shell in Windows 10.
+
 1. Install the Azure CLI 1.0: https://docs.microsoft.com/en-us/azure/cli-install-nodejs
 
-2. On a Linux server, on MacOS or in Bash shell in Windows 10: Download the repository to your laptop:
+2. Download the repository:
 $ git clone https://github.com/mglantz/ocp36-azure-simple
 
 3. Edit deploy.cfg
