@@ -30,25 +30,25 @@
 			"value": 128
 		},
 		"adminUsername": {
-			"value": "PICK_USERNAME"
+			"value": "OCP_USER"
 		},
 		"openshiftPassword": {
-			"value": "PICK_A_PASSWORD"
+			"value": "OCP_PASSWORD"
 		},
 		"cloudAccessUsername": {
-			"value": "YOUR_RHN_ACCOUNT"
+			"value": "RHN_ACCOUNT"
 		},
 		"cloudAccessPassword": {
-			"value": "YOUR_RHN_PASSWORD"
+			"value": "RHN_PASSWORD"
 		},
 		"cloudAccessPoolId": {
-			"value": "YOUR_REDHAT_OPENSHIFT_SUBSCRIPTION_POOL_ID"
+			"value": "SUBSCRIPTION_POOL_ID"
 		},
 		"sshPublicKey": {
-			"value": "GENERATE_A_PUBLIC_SSH_KEY"
+			"value": "PUBLIC_SSH_KEY"
 		},
 		"keyVaultResourceGroup": {
-			"value": "REPLACEocp"
+			"value": "REPLACE"
 		},
 		"keyVaultName": {
 			"value": "REPLACEKeyVaultName"
