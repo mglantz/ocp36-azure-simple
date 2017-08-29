@@ -42,10 +42,10 @@
 			"value": "YOUR_RHN_PASSWORD"
 		},
 		"cloudAccessPoolId": {
-			"value": "YOUR_REDHAT_OPENSHIFT_SUBSCRIPTION_POOL_ID"
+			"value": "SUBSCRIPTION_POOL_ID"
 		},
 		"sshPublicKey": {
-			"value": "GENERATE_A_PUBLIC_SSH_KEY"
+			"value": "PUBLIC_SSH_KEY"
 		},
 		"keyVaultResourceGroup": {
 			"value": "REPLACEocp"
