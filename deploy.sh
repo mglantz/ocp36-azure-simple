@@ -30,7 +30,7 @@ fi
 if [ -f ~/.ssh/id_rsa.pub ]; then
         PUBLIC_SSH_KEY="$(cat ~/.ssh/id_rsa.pub)"
 	if grep "PUBLIC_SSH_KEY" azuredeploy.parameters.json >/dev/null; then
-		echo "Edit azuredeploy.parameters.json and past your public ssh key into the value for sshPublicKey."
+		echo "Edit azuredeploy.parameters.json and paste your public ssh key into the value for sshPublicKey."
 		echo "Your key is:"
 		echo "$PUBLIC_SSH_KEY"
 		exit 1
@@ -39,7 +39,7 @@ else
         echo "No SSH key found in ~/.ssh/id_rsa. Generating key."
         ssh-keygen
 	PUBLIC_SSH_KEY="$(cat ~/.ssh/id_rsa)"
-	echo "Edit azuredeploy.parameters.json and past your public ssh key into the value for sshPublicKey.
+	echo "Edit azuredeploy.parameters.json and paste your public ssh key into the value for sshPublicKey.
 "
 	echo "Your key is:"
 	echo "$PUBLIC_SSH_KEY"
