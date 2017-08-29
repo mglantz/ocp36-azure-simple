@@ -79,4 +79,5 @@ azure group deployment create --name ${GROUP} --template-file azuredeploy.json -
 cat azuredeploy.parameters.json|sed -e "s/$GROUP/REPLACE/g" -e "s/$RHN_ACCOUNT/RHN_ACCOUNT/" -e "s/$RHN_PASSWORD/RHN_PASSWORD/" -e "s/$OCP_USER/OCP_USER/" -e "s/$OCP_PASSWORD/OCP_PASSWORD/" -e "s/$SUBSCRIPTION_POOL/SUBSCRIPTION_POOL_ID/" >azuredeploy.parameters.json.new
 mv azuredeploy.parameters.json.new azuredeploy.parameters.json
 
-echo "Deployment complete."
+echo "Deployment initiated. Allow ~30 minutes for a deployment to succeed."
+echo "The cluster will be reachable at https://${GROUP}master.${LOCATION}.cloudapp.azure.com:8443"
