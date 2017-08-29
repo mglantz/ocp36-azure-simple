@@ -15,10 +15,10 @@
 			"value": "ocp"
 		},
 		"openshiftMasterPublicIpDnsLabel": {
-			"value": "master"
+			"value": "REPLACEmaster"
 		},
 		"infraLbPublicIpDnsLabel": {
-			"value": "apps"
+			"value": "REPLACEapps"
 		},
 		"masterInstanceCount": {
 			"value": 1
@@ -30,16 +30,16 @@
 			"value": 128
 		},
 		"adminUsername": {
-			"value": "admin-user"
+			"value": "PICK_USERNAME"
 		},
 		"openshiftPassword": {
-			"value": "PICK_AN_ADMIN_PASSWORD"
+			"value": "PICK_A_PASSWORD"
 		},
 		"cloudAccessUsername": {
-			"value": "YOUR_REDHAT_ACCESS_EMAIL"
+			"value": "YOUR_RHN_ACCOUNT"
 		},
 		"cloudAccessPassword": {
-			"value": "YOUR_REDHAT_ACCESS_PASSWORD"
+			"value": "YOUR_RHN_PASSWORD"
 		},
 		"cloudAccessPoolId": {
 			"value": "YOUR_REDHAT_OPENSHIFT_SUBSCRIPTION_POOL_ID"
@@ -48,19 +48,19 @@
 			"value": "GENERATE_A_PUBLIC_SSH_KEY"
 		},
 		"keyVaultResourceGroup": {
-			"value": "ocp"
+			"value": "REPLACEocp"
 		},
 		"keyVaultName": {
-			"value": "ocpKeyVaultName"
+			"value": "REPLACEKeyVaultName"
 		},
 		"keyVaultSecret": {
-			"value": "ocpSecretName"
+			"value": "REPLACESecretName"
 		},
 		"defaultSubDomainType": {
-			"value": "custom"
+			"value": "xipio"
 		},
 		"defaultSubDomain": {
-			"value": "YOUR_PUBLIC_DOMAIN_NAME"
+			"value": "customdomain.com"
 		}
 	}
 }
