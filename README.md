@@ -1,5 +1,33 @@
 # OpenShift Container Platform 3.6 with Username / Password authentication for OpenShift
 
+## To deploy a cluster with a one-liner using deploy.sh
+
+The script will run on a Linux server or on MacOS. Possibly it will run in a bash shell in Windows 10.
+
+1. Install the Azure CLI 1.0: https://docs.microsoft.com/en-us/azure/cli-install-nodejs
+
+2. Login using the Azure CLI:
+
+$ azure login myuser@domain.suffix
+
+3. Download the repository:
+
+$ git clone https://github.com/mglantz/ocp36-azure-simple
+
+4. Edit deploy.cfg
+
+5. Run the deployment script to install an OpenShift cluster on Azure. Pass the name of your Azure resource group as an argument. The name of the group will form the DNS name of the OpenShift master like such: http://THEGROUPNAMEmaster.REGION.cloudapp.azure.com
+
+$ sh ./deploy.sh myocpdemo
+
+6. Wait for the deployment to complete. Check out the resource group in https://portal.azure.com and wait for it to say "2 Succeeded" under Deployments.
+
+## READ the instructions in its entirety before deploying via the deployment button below!
+
+This template deploys multiple VMs and requires some pre-work before you can successfully deploy the OpenShift Cluster.  If you don't get the pre-work done correctly, you will most likely fail to deploy the cluster using this template.  Please read the instructions completely before you proceed. 
+
+This template uses the On-Demand Red Hat Enterprise Linux image from the Azure Gallery.  This means there is an hourly charge for using this image.  At the same time, the instance will be registered to your Red Hat subscription so you will also be using one of your entitlements.  For this reason, this template is good for setting up temporary POCs or learning environments but not meant for production due to the "double billing".
+
 This template deploys OpenShift Container Platform with basic username / password for authentication to OpenShift. It includes the following resources:
 
 |Resource           	|Properties                                                                                                                          |
@@ -10,11 +38,6 @@ This template deploys OpenShift Container Platform with basic username / passwor
 |Public IP Addresses	|Bastion Public IP for Bastion Node<br />OpenShift Master public IP attached Master Load Balancer<br />OpenShift Router public IP attached to Infra Load Balancer            |
 |Storage Accounts   	|2 Storage Accounts                                                                                                                  |
 |Virtual Machines   	|1 Bastion Node - Used both to Run Ansible Playbook for OpenShift deployment and to do internal load balancing to the masters<br />1 or 3 Masters. Master 1 is used to run a NFS server to provide persistent storage.<br />1 or 3 Infra nodes<br />User-defined number of nodes<br />All VMs include a single attached data disk for Docker thin pool logical volume|
-## READ the instructions in its entirety before deploying!
-
-This template deploys multiple VMs and requires some pre-work before you can successfully deploy the OpenShift Cluster.  If you don't get the pre-work done correctly, you will most likely fail to deploy the cluster using this template.  Please read the instructions completely before you proceed. 
-
-This template uses the On-Demand Red Hat Enterprise Linux image from the Azure Gallery.  This means there is an hourly charge for using this image.  At the same time, the instance will be registered to your Red Hat subscription so you will also be using one of your entitlements.  For this reason, this template is good for setting up temporary POCs or learning environments but not meant for production due to the "double billing".
 
 ## Prerequisites
 
