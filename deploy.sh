@@ -7,8 +7,6 @@ if [ -f ./deploy.cfg ]; then
 	. ./deploy.cfg
 	if test -z $RHN_ACCOUNT; then
 		OK=1
-	elif test -z $RHN_PASSWORD; then
-		OK=1
 	elif test -z $OCP_USER; then
 		OK=1
 	elif test -z $OCP_PASSWORD; then
@@ -17,6 +15,10 @@ if [ -f ./deploy.cfg ]; then
 		OK=1
 	elif test -z $LOCATION; then
 		OK=1
+        elif test -z $RHN_PASSWORD; then
+                echo "Please type your red hat password, finish with [enter]:"
+                read -s
+                RHN_PASSWORD=$REPLY
 	fi
 else
 	OK=1
@@ -28,22 +30,27 @@ if [ "$OK" -eq 1 ]; then
 fi
 
 if [ -f ~/.ssh/id_rsa.pub ]; then
-        PUBLIC_SSH_KEY="$(cat ~/.ssh/id_rsa.pub)"
 	if grep "PUBLIC_SSH_KEY" azuredeploy.parameters.json >/dev/null; then
-		echo "Edit azuredeploy.parameters.json and paste your public ssh key into the value for sshPublicKey."
-		echo "Your key is:"
+		PUBLIC_SSH_KEY="$(cat ~/.ssh/id_rsa.pub)"
+		echo "Your public key at ~/.ssh/id_rsa.pub is:"
 		echo "$PUBLIC_SSH_KEY"
-		exit 1
 	fi
 else
-        echo "No SSH key found in ~/.ssh/id_rsa. Generating key."
+        echo "No SSH key found in ~/.ssh/id_rsa.pub. Generating key."
         ssh-keygen
-	PUBLIC_SSH_KEY="$(cat ~/.ssh/id_rsa)"
-	echo "Edit azuredeploy.parameters.json and paste your public ssh key into the value for sshPublicKey.
-"
+	PUBLIC_SSH_KEY="$(cat ~/.ssh/id_rsa.pub)"
 	echo "Your key is:"
 	echo "$PUBLIC_SSH_KEY"
-	exit 1
+fi
+if test -n "$PUBLIC_SSH_KEY"; then
+        echo "Do you want to use this key to access your azure VMs? (y) :"
+        read
+        if [ "$REPLY" == "y" ]; then
+                perl -pe 's/PUBLIC_SSH_KEY/`cat ~/.ssh/id_rsa.pub`/ge' -i azuredeploy.parameters.json
+        else
+                echo "Edit azuredeploy.parameters.json and paste your public ssh key into the value for sshPublicKey."
+                exit 1
+        fi
 fi
 
 # Assign first argument to be Azure Resource Group
@@ -76,6 +83,7 @@ azure keyvault set-policy -u ${GROUP}KeyVaultName --enabled-for-template-deploym
 # azuredeploy.parameters.json needs to be populated with valid values first, before you run this.
 azure group deployment create --name ${GROUP} --template-file azuredeploy.json -e azuredeploy.parameters.json --resource-group $GROUP --nowait
 
+cp azuredeploy.parameters.json azuredeploy.parameters.json.actuals
 cat azuredeploy.parameters.json|sed -e "s/$GROUP/REPLACE/g" -e "s/$RHN_ACCOUNT/RHN_ACCOUNT/" -e "s/$RHN_PASSWORD/RHN_PASSWORD/" -e "s/$OCP_USER/OCP_USER/" -e "s/$OCP_PASSWORD/OCP_PASSWORD/" -e "s/$SUBSCRIPTION_POOL/SUBSCRIPTION_POOL_ID/" >azuredeploy.parameters.json.new
 mv azuredeploy.parameters.json.new azuredeploy.parameters.json
 
@@ -93,7 +101,7 @@ while true; do
 	fi
 done
 
-echo "You can SSH into the cluster by accessing it's bastion host: ssh $(azure network public-ip show $GROUP bastionpublicip|grep "IP Address"|cut -d':' -f3|grep [0-9])"
+echo "You can SSH into the cluster by accessing it's bastion host: ssh ${OCP_USER}@$(azure network public-ip show $GROUP bastionpublicip|grep "IP Address"|cut -d':' -f3|grep [0-9])"
 echo "Once your SSH key has been distributed to all nodes, you can then jump passwordless from the bastion host to all nodes."
 echo "To SSH directly to the master, use port 2200: ssh ${GROUP}master.${LOCATION}.cloudapp.azure.com -p 2200"
 echo "For troubleshooting, check out /var/lib/waagent/custom-script/download/[0-1]/stdout or stderr on the nodes"
