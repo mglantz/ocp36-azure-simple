@@ -46,7 +46,17 @@ if test -n "$PUBLIC_SSH_KEY"; then
         echo "Do you want to use this key to access your azure VMs? (y) :"
         read
         if [ "$REPLY" == "y" ]; then
-                perl -pe 's/PUBLIC_SSH_KEY/`cat ~/.ssh/id_rsa.pub`/ge' -i azuredeploy.parameters.json
+		# copy key to local dir, file path does not expand
+                cp ~/.ssh/id_rsa.pub .
+		# add a closing quote to where we want to insert the key.
+		sed -e ':a' -e 'N' -e '$!ba' -e 's/\(\"PUBLIC_SSH_KEY\"\n\)/\1\"/g' azuredeploy.parameters.json > new
+		# copy contents of the public key into the parameters file
+                sed  -e '/PUBLIC_SSH_KEY/r id_rsa.pub' new > new1
+		# remove dummy value and line break
+                sed -e ':a' -e 'N' -e '$!ba' -e 's/PUBLIC_SSH_KEY\"\n//g' new1 > new2
+		# clean up temp files
+                rm new new1 id_rsa.pub
+                mv new2 azuredeploy.parameters.json
         else
                 echo "Edit azuredeploy.parameters.json and paste your public ssh key into the value for sshPublicKey."
                 exit 1
@@ -83,7 +93,6 @@ azure keyvault set-policy -u ${GROUP}KeyVaultName --enabled-for-template-deploym
 # azuredeploy.parameters.json needs to be populated with valid values first, before you run this.
 azure group deployment create --name ${GROUP} --template-file azuredeploy.json -e azuredeploy.parameters.json --resource-group $GROUP --nowait
 
-cp azuredeploy.parameters.json azuredeploy.parameters.json.actuals
 cat azuredeploy.parameters.json|sed -e "s/$GROUP/REPLACE/g" -e "s/$RHN_ACCOUNT/RHN_ACCOUNT/" -e "s/$RHN_PASSWORD/RHN_PASSWORD/" -e "s/$OCP_USER/OCP_USER/" -e "s/$OCP_PASSWORD/OCP_PASSWORD/" -e "s/$SUBSCRIPTION_POOL/SUBSCRIPTION_POOL_ID/" >azuredeploy.parameters.json.new
 mv azuredeploy.parameters.json.new azuredeploy.parameters.json
 
