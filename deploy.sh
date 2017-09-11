@@ -110,7 +110,7 @@ while true; do
 	fi
 done
 
-echo "You can SSH into the cluster by accessing it's bastion host: ssh ${OCP_USER}@$(azure network public-ip show $GROUP bastionpublicip|grep "IP Address"|cut -d':' -f3|grep [0-9])"
+echo "You can SSH into the cluster by accessing it's bastion host: ssh $(azure network public-ip show $GROUP bastionpublicip|grep "IP Address"|cut -d':' -f3|grep [0-9]|sed 's/ //g')"
 echo "Once your SSH key has been distributed to all nodes, you can then jump passwordless from the bastion host to all nodes."
 echo "To SSH directly to the master, use port 2200: ssh ${GROUP}master.${LOCATION}.cloudapp.azure.com -p 2200"
 echo "For troubleshooting, check out /var/lib/waagent/custom-script/download/[0-1]/stdout or stderr on the nodes"
