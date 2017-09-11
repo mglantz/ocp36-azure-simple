@@ -8,22 +8,33 @@ POOL_ID=$3
 # Register Host with Cloud Access Subscription
 echo $(date) " - Register host with Cloud Access Subscription"
 
+
 subscription-manager register --username="$USER" --password="$PASSWORD" --force
-if [ $? -eq 0 ]
-then
+if [ $? -eq 0 ]; then
    echo "Subscribed successfully"
 else
-   echo "Incorrect Username and / or Password specified"
-   exit 3
+   sleep 5
+   subscription-manager register --username="$USER" --password="$PASSWORD" --force
+   if [ "$?" -eq 0 ]; then
+      echo "Subscribed successfully."
+   else
+      echo "Incorrect Username and / or Password specified"
+      exit 3
+   fi
 fi
 
 subscription-manager attach --pool=$POOL_ID
-if [ $? -eq 0 ]
-then
+if [ $? -eq 0 ]; then
    echo "Pool attached successfully"
 else
-   echo "Incorrect Pool ID or no entitlements available"
-   exit 4
+   sleep 5
+   subscription-manager attach --pool=$POOL_ID
+   if [ "$?" -eq 0 ]; then
+      echo "Pool attached successfully"
+   else
+      echo "Incorrect Pool ID or no entitlements available"
+      exit 4
+   fi
 fi
 
 # Disable all repositories and enable only the required ones
