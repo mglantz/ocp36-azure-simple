@@ -71,6 +71,10 @@ if test -z $GROUP; then
 	echo "Usuage: $0 <unique name for Azure resource group>"
 	exit 1
 else
+	if dig ocpmtmaster.northeurope.cloudapp.azure.com|grep -v ";"|grep "IN A"|awk '{ print $5 }'|grep [0-9] >/dev/null; then
+		echo "Error: ${GROUP}master.${LOCATION}.cloudapp.azure.com already exists. Select other name than $GROUP."
+		exit 1
+	fi
 	cat azuredeploy.parameters.json|sed -e "s/REPLACE/$GROUP/g" -e "s/RHN_ACCOUNT/$RHN_ACCOUNT/" -e "s/RHN_PASSWORD/$RHN_PASSWORD/" -e "s/OCP_USER/$OCP_USER/" -e "s/OCP_PASSWORD/$OCP_PASSWORD/" -e "s/SUBSCRIPTION_POOL_ID/$SUBSCRIPTION_POOL/" >azuredeploy.parameters.json.new
 	mv azuredeploy.parameters.json.new azuredeploy.parameters.json
 fi
