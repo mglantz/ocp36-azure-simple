@@ -222,7 +222,7 @@
 		"osType": {
 			"publisher": "RedHat",
 			"offer": "RHEL",
-			"sku": "7.3",
+			"sku": "7.4",
 			"version": "latest"
 		},
 		"imageReference": "[variables('osType')]",
