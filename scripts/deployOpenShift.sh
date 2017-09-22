@@ -200,8 +200,10 @@ $MASTER-0.$DOMAIN
 [nodes]
 $MASTER-0.$DOMAIN openshift_node_labels="{'region': 'master', 'zone': 'default'}"
 $INFRA-0.$DOMAIN openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
-$NODE-[0:${NODELOOP}].$DOMAIN openshift_node_labels="{'region': 'nodes', 'zone': 'default'}"
 EOF
+for node in ocpn-{0..30}; do
+	echo $(ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }') echo $(ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }') openshift_node_labels=\"{\'region\': \'nodes\', \'zone\': \'default\'}\"
+done|grep ocpn >>/etc/ansible/hosts
 
 else
 
@@ -268,12 +270,20 @@ openshift_master_logging_public_url=https://kibana.$ROUTING
 
 # host group for masters
 [masters]
-$MASTER-[0:${MASTERLOOP}].$DOMAIN
+EOF
+for node in ocpm-{0..3}; do
+	ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }' 
+done|grep ocpm
 
+cat > /etc/ansible/hosts <<EOF
 # host group for etcd
 [etcd]
-$MASTER-[0:${MASTERLOOP}].$DOMAIN
+EOF
+for node in ocpm-{0..3}; do
+	ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }' 
+done|grep ocpm
 
+cat > /etc/ansible/hosts <<EOF
 [nfs]
 $MASTER-0.$DOMAIN
 
@@ -282,11 +292,16 @@ $BASTION
 
 # host group for nodes
 [nodes]
-$MASTER-[0:${MASTERLOOP}].$DOMAIN openshift_node_labels="{'region': 'master', 'zone': 'default'}"
-$INFRA-[0:${MASTERLOOP}].$DOMAIN openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
-$NODE-[0:${NODELOOP}].$DOMAIN openshift_node_labels="{'region': 'nodes', 'zone': 'default'}"
 EOF
-
+for node in ocpm-{0..3}; do
+	echo $(ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }') echo $(ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }') openshift_node_labels=\"{\'region\': \'master\', \'zone\': \'default\'}\"
+done|grep ocpm >>/etc/ansible/hosts
+for node in ocpi-{0..10}; do
+	echo $(ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }') echo $(ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }') openshift_node_labels=\"{\'region\': \'infra\', \'zone\': \'default\'}\"
+done|grep ocpi >>/etc/ansible/hosts
+for node in ocpn-{0..30}; do
+	echo $(ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }') echo $(ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }') openshift_node_labels=\"{\'region\': \'nodes\', \'zone\': \'default\'}\"
+done|grep ocpn >>/etc/ansible/hosts
 fi
 
 # Create and distribute hosts file to all nodes, this is due to us having to use 
