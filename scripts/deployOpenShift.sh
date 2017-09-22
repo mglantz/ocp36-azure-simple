@@ -408,4 +408,15 @@ chmod a+r /tmp/atomic-openshift-master
 
 runuser -l $SUDOUSER -c "ansible-playbook ~/postinstall4.yml"
 
+# OPENSHIFT_DEFAULT_REGISTRY UNSET MAGIC
+if [ $MASTERCOUNT -ne 1 ]
+then
+	for item in ocpm-0 ocpm-1 ocpm-2; do
+		runuser -l $SUDOUSER -c "ssh $item 'sudo sed -i \"s/OPENSHIFT_DEFAULT_REGISTRY/#OPENSHIFT_DEFAULT_REGISTRY/g\" /etc/sysconfig/atomic-openshift-master-api'"
+		runuser -l $SUDOUSER -c "ssh $item 'sudo sed -i \"s/OPENSHIFT_DEFAULT_REGISTRY/#OPENSHIFT_DEFAULT_REGISTRY/g\" /etc/sysconfig/atomic-openshift-master-controllers'"
+		runuser -l $SUDOUSER -c "ssh $item 'sudo systemctl restart atomic-openshift-master-api'"
+		runuser -l $SUDOUSER -c "ssh $item 'sudo systemctl restart atomic-openshift-master-controllers'"
+	done
+fi
+
 echo $(date) " - Script complete"
