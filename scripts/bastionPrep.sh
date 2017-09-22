@@ -5,9 +5,25 @@ USER=$1
 PASSWORD="$2"
 POOL_ID=$3
 
+# Verify that we have access to Red Hat Network
+ITER=0
+while true; do
+	curl -kv https://access.redhat.com >/dev/null 2>&1
+	if [ "$?" -eq 0 ]; then
+		echo "We have a working network connection to Red Hat."
+		break
+	else
+		ITER=$(expr $ITER + 1)
+		echo "We do not yet have a working network connection to Red Hat. Try: $ITER"
+	fi
+	if [ "$ITER" -eq 10 ]; then
+      echo "Error: we are experiencing some network error to Red Hat."
+		exit 1
+	fi
+done
+
 # Register Host with Cloud Access Subscription
 echo $(date) " - Register host with Cloud Access Subscription"
-
 
 subscription-manager register --username="$USER" --password="$PASSWORD" --force
 if [ $? -eq 0 ]; then
