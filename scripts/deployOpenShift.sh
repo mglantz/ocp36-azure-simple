@@ -104,7 +104,9 @@ cat > /home/${SUDOUSER}/postinstall3.yml <<EOF
     shell: echo "${PASSWORD}"|passwd root --stdin
 EOF
 
-# Run on all masters
+if [ $MASTERCOUNT -eq 1 ]
+then
+# Run on master
 cat > /home/${SUDOUSER}/postinstall4.yml <<EOF
 ---
 - hosts: masters
@@ -124,6 +126,30 @@ cat > /home/${SUDOUSER}/postinstall4.yml <<EOF
   - name: restart master
     shell: systemctl restart atomic-openshift-master
 EOF
+else
+# HA setup. Run on all masters
+cat > /home/${SUDOUSER}/postinstall4.yml <<EOF
+---
+- hosts: masters
+  remote_user: ${SUDOUSER}
+  become: yes
+  become_method: sudo
+  vars:
+    description: "Unset default registry DNS name"
+  tasks:
+  - name: copy atomic-openshift-master file
+    copy:
+      src: /tmp/atomic-openshift-master
+      dest: /etc/sysconfig/atomic-openshift-master
+      owner: root
+      group: root
+      mode: 0644
+  - name: restart master api
+    shell: systemctl restart atomic-openshift-master-api
+  - name: restart master controller
+    shell: systemctl restart atomic-openshift-master-controllers
+EOF
+fi
 
 # Create Ansible Hosts File
 echo $(date) " - Create Ansible Hosts file"
