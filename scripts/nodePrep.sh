@@ -17,9 +17,10 @@ while true; do
 		echo "We do not yet have a working network connection to Red Hat. Try: $ITER"
 	fi
 	if [ "$ITER" -eq 10 ]; then
-      echo "Error: we are experiencing some network error to Red Hat."
+      		echo "Error: we are experiencing some network error to Red Hat."
 		exit 1
 	fi
+	sleep 60
 done
 
 # Register Host with Cloud Access Subscription
