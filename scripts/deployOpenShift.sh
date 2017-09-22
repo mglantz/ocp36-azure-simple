@@ -273,17 +273,17 @@ openshift_master_logging_public_url=https://kibana.$ROUTING
 EOF
 for node in ocpm-{0..3}; do
 	ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }' 
-done|grep ocpm
+done|grep ocpm >>/etc/ansible/hosts
 
-cat > /etc/ansible/hosts <<EOF
+cat >> /etc/ansible/hosts <<EOF
 # host group for etcd
 [etcd]
 EOF
 for node in ocpm-{0..3}; do
 	ping -c 1 $node 2>/dev/null|grep ocp|grep PING|awk '{ print $2 }' 
-done|grep ocpm
+done|grep ocpm >>/etc/ansible/hosts
 
-cat > /etc/ansible/hosts <<EOF
+cat >> /etc/ansible/hosts <<EOF
 [nfs]
 $MASTER-0.$DOMAIN
 
