@@ -16,6 +16,8 @@ $ git clone https://github.com/mglantz/ocp36-azure-simple
 
 4. Edit deploy.cfg
 
+4.b Edit azuredeploy.parameters.json to reflect number of masters and nodes to install. Regarding number of masters, select 1 or 3. Selecting 3 will setup a highly available cluster and also spin up 3 infra nodes giving you a cluster of total 8 VMs (3 masters, 3 infra, 1 app nodes, 1 bastion).
+
 5. Run the deployment script to install an OpenShift cluster on Azure. Pass the name of your Azure resource group as an argument. The name of the group will form the DNS name of the OpenShift master like such: http://THEGROUPNAMEmaster.REGION.cloudapp.azure.com
 
 $ sh ./deploy.sh myocpdemo
