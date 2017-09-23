@@ -46,17 +46,8 @@ if test -n "$PUBLIC_SSH_KEY"; then
         echo "Do you want to use this key to access your azure VMs? (y) :"
         read
         if [ "$REPLY" == "y" ]; then
-		# copy key to local dir, file path does not expand
-                cp ~/.ssh/id_rsa.pub .
-		# add a closing quote to where we want to insert the key.
-		sed -e ':a' -e 'N' -e '$!ba' -e 's/\(\"PUBLIC_SSH_KEY\"\n\)/\1\"/g' azuredeploy.parameters.json > new
-		# copy contents of the public key into the parameters file
-                sed  -e '/PUBLIC_SSH_KEY/r id_rsa.pub' new > new1
-		# remove dummy value and line break
-                sed -e ':a' -e 'N' -e '$!ba' -e 's/PUBLIC_SSH_KEY\"\n//g' new1 > new2
-		# clean up temp files
-                rm new new1 id_rsa.pub
-                mv new2 azuredeploy.parameters.json
+		awk -v key="$PUBLIC_SSH_KEY" '{sub(/PUBLIC_SSH_KEY/,key)}1' azuredeploy.parameters.json >azuredeploy.parameters.json.new
+		mv azuredeploy.parameters.json.new azuredeploy.parameters.json
         else
                 echo "Edit azuredeploy.parameters.json and paste your public ssh key into the value for sshPublicKey."
                 exit 1
