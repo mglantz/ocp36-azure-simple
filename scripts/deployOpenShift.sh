@@ -144,10 +144,6 @@ cat > /home/${SUDOUSER}/postinstall4.yml <<EOF
       owner: root
       group: root
       mode: 0644
-  - name: restart master api
-    shell: systemctl restart atomic-openshift-master-api
-  - name: restart master controller
-    shell: systemctl restart atomic-openshift-master-controllers
 EOF
 fi
 
