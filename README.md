@@ -10,19 +10,23 @@ The script will run on a Linux server or on MacOS. Possibly it will run in a bas
 
 $ azure login myuser@domain.suffix
 
-3. Download the repository:
+3. If this is the first time you run the Azure CLI, you may have to run this command:
+
+$ azure provider register --namespace "Microsoft.KeyVault"
+
+4. Download the repository:
 
 $ git clone https://github.com/mglantz/ocp36-azure-simple
 
-4. Edit deploy.cfg
+5. Edit deploy.cfg
 
-4.b Edit azuredeploy.parameters.json to reflect number of masters and nodes to install. Regarding number of masters, select 1 or 3. Selecting 3 will setup a highly available cluster and also spin up 3 infra nodes giving you a cluster of total 8 VMs (3 masters, 3 infra, 1 app nodes, 1 bastion).
+5b. Edit azuredeploy.parameters.json to reflect number of masters and nodes to install. Regarding number of masters, select 1 or 3. Selecting 3 will setup a highly available cluster and also spin up 3 infra nodes giving you a cluster of total 8 VMs (3 masters, 3 infra, 1 app nodes, 1 bastion).
 
-5. Run the deployment script to install an OpenShift cluster on Azure. Pass the name of your Azure resource group as an argument. The name of the group will form the DNS name of the OpenShift master like such: http://THEGROUPNAMEmaster.REGION.cloudapp.azure.com
+6. Run the deployment script to install an OpenShift cluster on Azure. Pass the name of your Azure resource group as an argument. The name of the group will form the DNS name of the OpenShift master like such: http://THEGROUPNAMEmaster.REGION.cloudapp.azure.com
 
 $ sh ./deploy.sh myocpdemo
 
-6. Wait for the deployment to complete. Check out the resource group in https://portal.azure.com and wait for it to say "2 Succeeded" under Deployments.
+7. Wait for the deployment to complete. Check out the resource group in https://portal.azure.com and wait for it to say "2 Succeeded" under Deployments.
 
 ## READ the instructions in its entirety before deploying via the deployment button below!
 
