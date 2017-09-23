@@ -62,7 +62,7 @@ if test -z $GROUP; then
 	echo "Usuage: $0 <unique name for Azure resource group>"
 	exit 1
 else
-	if dig ocpmtmaster.northeurope.cloudapp.azure.com|grep -v ";"|grep "IN A"|awk '{ print $5 }'|grep [0-9] >/dev/null; then
+	if dig ${GROUP}master.${LOCATION}.cloudapp.azure.com|grep -v ";"|grep "IN A"|awk '{ print $5 }'|grep [0-9] >/dev/null; then
 		echo "Error: ${GROUP}master.${LOCATION}.cloudapp.azure.com already exists. Select other name than $GROUP."
 		exit 1
 	fi
