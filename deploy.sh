@@ -167,7 +167,7 @@ azure keyvault set-policy -u ${GROUP}KeyVaultName --enabled-for-template-deploym
 
 # Launch deployment of cluster, after this it’s just waiting for it to complete. 
 # azuredeploy.parameters.json needs to be populated with valid values first, before you run this.
-azure group deployment create --name ${GROUP} --template-file azuredeploy.json -e azuredeploy.parameters.json.test --resource-group $GROUP --nowait
+azure group deployment create --name ${GROUP} --template-file azuredeploy.json -e azuredeploy.parameters.json --resource-group $GROUP --nowait
 
 echo
 echo "Deployment initiated. Allow 40-50 minutes for a deployment to succeed."
